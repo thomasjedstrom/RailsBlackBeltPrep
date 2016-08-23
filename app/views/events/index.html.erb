@@ -1,0 +1,119 @@
+<h1 class="banner">Welcome, <%= current_user.first_name %></h1>
+
+<h3 class="banner">Events in your state:</h3>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Date</th>
+		<th>Location</th>
+		<th>Host</th>
+		<th>Action/status</th>
+	</tr>
+	<% if @events_in_state %>
+		<% @events_in_state.each do |event| %>
+			<tr>
+				<td><a href="/events/<%= event.id %>"><%= event.name %></a></td>
+				<td><%= event.date.strftime("%B %e, %Y") %></td>
+				<td><%= event.location %></td>
+				<td><%= event.user.first_name %></td>
+				<% if event.user == current_user %>
+					<td>
+						<a href="/events/<%= event.id %>/edit" class="btn">Edit</a>
+						<form action='/events/<%= event.id %>' method='post' class="ib">
+							<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+							<input type="hidden" name="_method" value="delete">
+							<input type='submit' value='Delete' class="btn">
+						</form> 
+					</td>
+
+				<% elsif current_user.events.include?(event) %>
+					<td><b>Attending</b>
+						<a href="/users/cancel/<%= event.id %>" class="btn">Cancel</a>
+					</td>
+				<% else %>
+					<td><a href="/users/join/<%= event.id %>" class="btn">Join</a></td>
+				<% end %>
+			</tr>
+		<% end %>
+	<% end %>
+</table>
+
+<h3 class="banner">Events in other states:</h3>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Date</th>
+		<th>Location</th>
+		<th>State</th>
+		<th>Host</th>
+		<th>Action/status</th>
+	</tr>
+	<% if @events_out_state %>
+		<% @events_out_state.each do |event| %>
+			<tr>
+				<td><a href="/events/<%= event.id %>"><%= event.name %></a></td>
+				<td><%= event.date.strftime("%B %e, %Y") %></td>
+				<td><%= event.location %></td>
+				<td><%= event.state.initials %></td>
+				<td><%= event.user.first_name %></td>
+				<% if event.user == current_user %>
+					<td>
+						<a href="/events/<%= event.id %>/edit" class="btn">Edit</a> | 
+						<form action='/events/<%= event.id %>' method='post' class="ib">
+							<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+							<input type="hidden" name="_method" value="delete">
+							<input type='submit' value='Delete' class="btn">
+						</form> 
+					</td>
+
+				<% elsif current_user.events.include?(event) %>
+					<td><b>Attending</b>
+						<a href="/users/cancel/<%= event.id %>" class="btn">Cancel</a>
+					</td>
+				<% else %>
+					<td><a href="/users/join/<%= event.id %>" class="btn">Join</a></td>
+				<% end %>
+			</tr>
+		<% end %>
+	<% end %>
+</table>
+
+
+<h4 class="banner">Add Event</h4>
+<div>
+	<% if flash[:event_errors] %>
+		<ul>
+			<% flash[:event_errors].each do |msg| %>
+				<li class="error"><%= msg %></li>
+			<% end %>
+		</ul>
+	<% end %>
+
+	<form action="/events" method="POST">
+		<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+		<br>
+		<div class="row">
+			<label for="name">Name:</label>
+			<input type="text" name="event[name]"><br>
+		</div>
+
+		<div class="row">
+			<label for="date">Date:</label>
+			<input type="date" name="event[date]"><br>
+		</div>
+		<div class="row">
+			<label for="location">Location:</label>
+			<input type="text" name="event[location]" id="locationinput">
+			<%= collection_select(:event, :state_id, State.all, :id, :state_initials) %>
+		</div>
+
+		<div class="row">
+			<input type="submit" value="Add Event" name="Add Event" class="btn">
+		</div>
+	</form>
+
+</div>
+
+
+
+

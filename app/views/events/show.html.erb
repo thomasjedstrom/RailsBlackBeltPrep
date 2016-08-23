@@ -1,0 +1,53 @@
+<h1 class="banner"><%= @event.name %></h1>
+
+<div class="eventInfo">
+	<h3 class="banner">Host: <%= @event.user.first_name %></h3>
+	<h3 class="banner">Date: <%= @event.date.strftime("%B %e, %Y") %></h3>
+	<h3 class="banner">Location: <%= @event.location %>, <%= @event.state.initials %></h3>
+	<h4 class="banner">People who are attending this event: <%= @event.users.count %> </h4>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Location</th>
+			<th>State</th>
+		</tr>
+		<% if @event.users %>
+			<% @event.users.each do |user| %>
+				<tr>
+					<td><%= user.first_name %> <%= user.last_name %></td>
+					<td><%= user.city %></td>
+					<td><%= user.state.initials %></td>
+				</tr>
+			<% end %>
+		<% end %>
+	</table>
+</div>
+
+<div class="discussionInfo">
+	<h2 class="banner">Discussion about this event:</h2>
+	<div class="discussion">
+		<% if @discussion %>
+			<% @discussion.each do |blirp| %>
+				<span><b><%= blirp.user.first_name %> says:</b> <%= blirp.content %></span>
+				<p>-------------</p>
+			<% end %>
+		<% end %>
+	</div>
+
+	<% if flash[:dis_errors] %>
+		<ul>
+			<% flash[:dis_errors].each do |msg| %>
+				<li class="error"><%= msg %></li>
+			<% end %>
+		</ul>
+	<% end %>
+
+	<div class="addComment">
+		<form action="/discussion/<%= @event.id %>" method="POST">
+			<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+			<br>
+			<textarea rows="4" cols="50" name="discussion[content]"></textarea>
+			<input type="submit" name="Submit Comment" class="btn">
+		</form>
+	</div>
+</div>

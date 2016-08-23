@@ -1,0 +1,42 @@
+<div id="editcontainer" class="editForm">
+	<h1 class="banner">Edit Your Profile</h1>	
+
+	<% if flash[:edit_errors] %>	
+		<ul>
+			<% flash[:edit_errors].each do |msg| %>
+				<li class="error"><%= msg %></li>
+			<% end %>
+		</ul>
+	<% end %>
+
+	<form action="/users/<%= @user.id %>" method="POST">
+		<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+		<input name="_method" value="patch" type="hidden">
+		<br>
+		<div class="row">
+			<label for="first_name">First Name:</label>
+			<input type="text" name="user[first_name]" value="<%= @user.first_name %>"><br>
+		</div>
+
+		<div class="row">
+			<label for="last_name">Last Name:</label>
+			<input type="text" name="user[last_name]" value="<%= @user.last_name %>"><br>
+		</div>
+
+		<div class="row">
+			<label for="email">Email:</label>
+			<input type="email" name="user[email]" value="<%= @user.email %>"><br>
+		</div>
+
+		<div class="row">
+			<label for="location">Location:</label>
+			<input type="text" name="user[city]" id="locationinput" value="<%= @user.city %>">
+			<%= collection_select(:user, :state_id, State.all, :id, :state_initials) %>
+		</div>
+
+		<div class="row">
+			<input type="submit" value="Update Records" name="Update Records" class="btn">
+		</div>
+	</form>
+
+</div>

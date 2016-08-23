@@ -1,0 +1,86 @@
+<div id="indexContainer">
+<h1 class="banner">Welcome!</h1>
+
+<div id="registrationContainer" class="loginRegContainer">
+	<h2 class="indexTitle">Register</h2>
+
+	<% if flash[:reg_errors] %>
+		<ul>
+			<% flash[:reg_errors].each do |msg| %>
+				<li class="error"><%= msg %></li>
+			<% end %>
+		</ul>
+	<% end %>
+
+	<form action="/users" method="POST">
+		<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+		<br>
+		<div class="row">
+			<label for="first_name">First Name:</label>
+			<input type="text" name="user[first_name]"><br>
+		</div>
+
+		<div class="row">
+			<label for="last_name">Last Name:</label>
+			<input type="text" name="user[last_name]"><br>
+		</div>
+
+		<div class="row">
+			<label for="email">Email:</label>
+			<input type="email" name="user[email]"><br>
+		</div>
+
+		<div class="row">
+			<label for="location">Location:</label>
+			<input type="text" name="user[city]" id="locationinput">
+			<%= collection_select(:user, :state_id, State.all, :id, :state_initials) %>
+		</div>
+
+		<div class="row">
+			<label for="password">Password:</label>
+			<input type="password" name="user[password]"><br>
+		</div>
+
+		<div class="row">
+			<span>*Password should be at least 8 characters</span>
+		</div>
+
+		<div class="row">
+			<label for="password">Confirm PW:</label>
+			<input type="password" name="user[password_confirmation]"><br>
+		</div>
+
+		<div class="row">
+			<input type="submit" value="Register" name="Register" class="btn">
+		</div>
+	</form>
+
+</div>
+
+
+<div id="loginContainer" class="loginRegContainer">
+	<h2 class="indexTitle">Login</h2>
+	
+	<% if flash[:login_error] %>
+		<span class="error"><%= flash[:login_error] %></span>
+	<% end %>
+
+	<form action="/sessions" method="post" role="form">
+		<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+		<br>
+		<div class="row">
+			<label for="email">Email:</label>
+			<input id="email" type="email" name="email">
+		</div>
+
+		<div class="row">
+			<label for="password">Password:</label>
+			<input id="password" type="password" name="password">
+		</div>
+
+		<div class="row">
+			<input type="submit" value="Login" name="Login" class="btn">
+		</div>
+	</form>
+</div>
+</div>
