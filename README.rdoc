@@ -1,28 +1,3 @@
-== README
+# Rails Black Belt Prep Assignment
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Using Rails, this is an app with a lot of CRUD.  Users can login/register, pages include authentication.  Users can create and manage events, join others' events, and post comments on events.  I used the built in gems for authentication however I just discovered devise and will be modifying this app to use it in the near future.
